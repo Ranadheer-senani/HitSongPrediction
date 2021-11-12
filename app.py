@@ -73,7 +73,7 @@ def main():
         output=predict_hit(song_lyrics, features)
         st.success('Song name is {} by {}'.format(song_name,artist))
 
-        if output > 0.5:
+        if output > 0.8:
             st.markdown(danger_html,unsafe_allow_html=True)
         else:
             st.markdown(safe_html,unsafe_allow_html=True)
