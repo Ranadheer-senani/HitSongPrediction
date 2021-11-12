@@ -17,11 +17,10 @@ def predict_hit(lyrics,features):
     emb = torch.tensor(emb).float() 
     features = torch.tensor(features).float().reshape(1,15)
 
-
     with torch.no_grad():
-        score = torch.nn.Sigmoid()(model(emb,features))
+        score = torch.nn.Sigmoid()(model(emb,features)).numpy()[0][0]
 
-    return score *100
+    return score
 
 def main():
     # st.title("Hit Song Prediction")
