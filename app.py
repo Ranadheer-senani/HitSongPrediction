@@ -9,11 +9,14 @@ model = Model()
 model_path = 'best_model.pth'
 model.load_state_dict(torch.load(model_path, map_location = torch.device('cpu')))
 
+model.eval()
+
 def predict_hit(lyrics,features):
     # lyrics
     emb = get_emb(lyrics)
-    emb = torch.tensor(emb).float()
-    features = torch.tensor(features).float()
+    emb = torch.tensor(emb).float() 
+    features = torch.tensor(features).float().reshape(1,15)
+
 
     with torch.no_grad():
         score = model(emb,features)
@@ -57,12 +60,12 @@ def main():
       sblist = list(set(artis))
       artist = st.selectbox("Select artist",sblist)
       song_features = (spotify.features(search_results[artist]),search_results[artist])
-      # song_features[0]
-      features = [song_features[0][key] for key in song_features[0].keys() if key in ['dancability','energy', 'liveliness', 'tempo' 'explicit']]
+      keys = song_features[0].keys()
+      features = [song_features[0][key] for key in keys if key in ['danceability','energy', 'liveness', 'tempo', 'explicit']]
       genre_onehot = [0]*10
       # genre_onehot[song_features[0]['genre']] = 1
       genre_onehot[6]=1
-      features = features + genre_onehot 
+      features = features +[0]+ genre_onehot
       song_lyrics = get_lyrics(song_name,artist.split(',')[0])
       song_lyrics    
 
