@@ -19,9 +19,9 @@ def predict_hit(lyrics,features):
 
 
     with torch.no_grad():
-        score = model(emb,features)
+        score = torch.nn.Sigmoid()(model(emb,features))
 
-    return score*100
+    return score *100
 
 def main():
     # st.title("Hit Song Prediction")
@@ -72,8 +72,8 @@ def main():
     if st.button("Predict"):
         output=predict_hit(song_lyrics, features)
         st.success('Song name is {} by {}'.format(song_name,artist))
-
-        if output > 0.8:
+        output
+        if output < 0.8:
             st.markdown(danger_html,unsafe_allow_html=True)
         else:
             st.markdown(safe_html,unsafe_allow_html=True)
